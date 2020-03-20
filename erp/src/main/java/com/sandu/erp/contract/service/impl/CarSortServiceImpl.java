@@ -6,7 +6,6 @@ import com.sandu.common.exception.GlobalExceptionCode;
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.erp.contract.mapper.CarSortMapper;
 import com.sandu.erp.contract.pojo.dto.CarSortDto;
-import com.sandu.erp.contract.pojo.po.CarArea;
 import com.sandu.erp.contract.pojo.po.CarSort;
 import com.sandu.erp.contract.service.CarSortService;
 import org.springframework.beans.BeanUtils;
@@ -64,7 +63,7 @@ public class CarSortServiceImpl  implements CarSortService {
             }
         } else {
         //无ID 为新增
-            CarSort selectOne = this.carSortMapper.selectOne(new QueryWrapper<CarSort>().eq("car_year_id", saveDto.getCarYearId()).eq("car_sort_name", saveDto.getCarSortName()));
+            CarSort selectOne = this.carSortMapper.selectOne(new QueryWrapper<CarSort>().eq("year", saveDto.getYear()).eq("name", saveDto.getName()));
             if (selectOne!=null){
                 throw new BaseParamException("此年款汽车已经存在此型号", GlobalExceptionCode.NOT_FOUND_EXCEPTION_CODE);
             }
@@ -102,6 +101,7 @@ public class CarSortServiceImpl  implements CarSortService {
      */
      @Override
      public CarSort detail(Long id) {
+
          CarSort carSort = this.carSortMapper.selectById(id);
          //判断实体是否有数据
          if (carSort == null) {

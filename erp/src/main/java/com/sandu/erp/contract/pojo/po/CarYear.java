@@ -30,7 +30,7 @@ public class CarYear  {
     /**
     主键
     */
-    @TableId(value = "id", type = IdType.ID_WORKER)
+    @TableId(value = "id", type = IdType.AUTO)
     @TableField(value = "id",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "主键")
     private Integer id;
@@ -41,6 +41,14 @@ public class CarYear  {
     @TableField(value = "brand_id",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "汽车品牌ID")
     private Integer brandId;
+
+
+    /**
+     汽车品牌ID
+     */
+    @TableField(value = "series_id",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "车系ID")
+    private Integer seriesId;
 
     /**
     汽车年款名字

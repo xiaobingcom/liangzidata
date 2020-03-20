@@ -11,64 +11,72 @@ import java.util.Date;
 
 
 /**
- * 汽车品牌表 实体类
- * Module: CarBrand.java
+ *  实体类
+ * Module: CarSeries.java
  *
  * @author xiaobing
  * @since JDK 1.8
  * @version 1.1
- * @date 2020-03-10
+ * @date 2020-03-19
  * @Descriptions:
 */
 @Getter
 @Setter
 @ToString
-@TableName(value = "tb_car_brand")
-public class CarBrand  {
+@TableName(value = "tb_car_series")
+public class CarSeries {
 
 
     /**
-    汽车品牌名字
-    */
-    @TableField(value = "car_name",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "汽车品牌名字")
-    private String carName;
-
-    /**
-    主键ID
+    主键
     */
     @TableId(value = "id", type = IdType.AUTO)
     @TableField(value = "id",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "主键")
     private Integer id;
 
     /**
-     * 首字母
-     */
+    
+    */
+    @TableField(value = "brand_id",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "品牌ID")
+    private Integer brandId;
+
+    /**
+    名称
+    */
+    @TableField(value = "name",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "名称")
+    private String name;
+
+    /**
+    全名
+    */
+    @TableField(value = "full_name",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "全名")
+    private String fullName;
+
+    /**
+    首字母
+    */
     @TableField(value = "firstletter",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "首字母")
     private String firstletter;
 
     /**
-    修改时间
+    
     */
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "update_date",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "修改时间")
+    @ApiModelProperty(value = "")
     private Date updateDate;
 
     /**
-    创建时间
+    
     */
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "create_date",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "")
     private Date createDate;
-
-    /**
-    图标
-    */
-    @TableField(value = "picture",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "图标")
-    private String picture;
 
 }

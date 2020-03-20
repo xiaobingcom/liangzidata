@@ -2,9 +2,9 @@ package com.sandu.erp.contract.controller;
 
 import com.sandu.common.response.ResultCode;
 import com.sandu.common.response.ReturnValueLoader;
-import com.sandu.erp.contract.pojo.dto.CarSortDto;
-import com.sandu.erp.contract.pojo.po.CarSort;
-import com.sandu.erp.contract.service.CarSortService;
+import com.sandu.erp.contract.pojo.dto.CarSeriesDto;
+import com.sandu.erp.contract.pojo.po.CarSeries;
+import com.sandu.erp.contract.service.CarSeriesService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * 汽车型号控制层
+ * 汽车车系表 控制层
  *
  * @author xiaobing
  * @version v1.0.0
@@ -22,16 +22,16 @@ import javax.validation.Valid;
  * ---------------------------------------------------------------------------------*
  * 2020-03-10             xiaobing          v1.0.0           Created
  */
-@Api(tags = "汽车型号api")
+@Api(tags = "汽车车系表")
 @RestController
-@RequestMapping("/CarSort")
-public class CarSortController {
+@RequestMapping("/carSeries")
+public class CarSeriesController {
 
     @Autowired
-    private CarSortService carSortService;
+    private CarSeriesService carSeriesService;
 
     /**
-     * 功能描述: 新增
+     * 功能描述: 新增汽车车系表
      *
      * @param: saveDto 新增需要的参数
      * @auther: xiaobing
@@ -39,38 +39,36 @@ public class CarSortController {
      * @return:
      */
     @PutMapping
-    @ApiOperation(value = "新增")
+    @ApiOperation(value = "新增汽车车系表")
     @ApiResponses({@ApiResponse(code = 0, response = int.class, message = "获取数据成功")})
-    public ReturnValueLoader put(@Valid @RequestBody CarSortDto saveDto,@RequestParam("name") String name) {
+    public ReturnValueLoader put(@Valid @RequestBody CarSeriesDto saveDto) {
 
-        int id = carSortService.put(saveDto);
+        int id = carSeriesService.put(saveDto);
         return new ReturnValueLoader(id);
     }
 
     /**
-     * 功能描述: 查看
+     * 功能描述: 查看汽车车系表
      *
      * @param:
      * @auther: xiaobing
      * @date: 2020-03-10
      * @return:
      */
-    @ApiOperation(value = "查看")
-    @ApiResponses({@ApiResponse(code = 0, response = CarSort.class, message = "获取数据成功")})
-    @GetMapping
+    @ApiOperation(value = "查看汽车车系")
+    @ApiResponses({@ApiResponse(code = 0, response = CarSeries.class, message = "获取数据成功")})
+    @GetMapping("detail")
     public ReturnValueLoader detail(@RequestParam Long id) {
-
-
-        CarSort carSort = carSortService.detail(id);
-        if (carSort == null) {
+        CarSeries carSeries = carSeriesService.detail(id);
+        if (carSeries == null) {
             return new ReturnValueLoader(ResultCode.CHECK_DATA_IS_EMPTY);
         }
 
-        return new ReturnValueLoader(carSort);
+        return new ReturnValueLoader(carSeries);
     }
 
     /**
-     * 功能描述: 列表
+     * 功能描述: 汽车车系表列表
      *
      * @param:
      * @auther: xiaobing
@@ -78,31 +76,32 @@ public class CarSortController {
      * @return:
      */
 
-    @ApiOperation(value = "列表")
-    @ApiResponses({@ApiResponse(code = 0, response = CarSort.class, message = "获取数据成功"),})
-    @GetMapping("list")
-    public ReturnValueLoader list(@RequestParam("carYearId")@ApiParam("汽车年款ID") Integer carYearId) {
+    @ApiOperation(value = "汽车车系表列表")
+    @ApiResponses({@ApiResponse(code = 0, response = CarSeries.class, message = "获取数据成功"),})
+    @GetMapping
+    public ReturnValueLoader list(@RequestParam Integer carBrandId) {
 
-        return carSortService.list(carYearId);
+        return carSeriesService.list(carBrandId);
     }
 
 
+
     /**
-     * 功能描述: 移除
+     * 功能描述: 汽车车系表移除
      *
      * @param:
      * @auther: xiaobing
      * @date: 2020-03-10
      * @return:
      */
-    @ApiOperation(value = "删除", notes = "删除使用")
+    @ApiOperation(value = "汽车车系表删除", notes = "删除使用")
     @ApiResponses({
             @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
     })
     @DeleteMapping
-    public ReturnValueLoader delete(@RequestParam @ApiParam("ID") Long id) {
+    public ReturnValueLoader delete(@RequestParam @ApiParam("汽车车系表ID") Long id) {
 
-        int deleteCount = this.carSortService.delete(id);
+        int deleteCount = this.carSeriesService.delete(id);
         return ReturnValueLoader.validatorCount(deleteCount);
     }
 

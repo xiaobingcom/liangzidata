@@ -55,9 +55,9 @@ public class CarBrandController {
      * @date: 2020-03-10
      * @return:
      */
-    @ApiOperation(value = "查看汽车品牌表")
+    @ApiOperation(value = "查看汽车品牌")
     @ApiResponses({@ApiResponse(code = 0, response = CarBrand.class, message = "获取数据成功")})
-    @GetMapping("list")
+    @GetMapping("detail")
     public ReturnValueLoader detail(@RequestParam Long id) {
         CarBrand carBrand = carBrandService.detail(id);
         if (carBrand == null) {

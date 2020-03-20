@@ -59,6 +59,7 @@ public class CarYearController {
     @ApiResponses({@ApiResponse(code = 0, response = CarYear.class, message = "获取数据成功")})
     @GetMapping
     public ReturnValueLoader detail(@RequestParam Long id) {
+
     CarYear carYear = carYearService.detail(id);
     if (carYear==null){
         return new ReturnValueLoader(ResultCode.CHECK_DATA_IS_EMPTY);
@@ -78,9 +79,9 @@ public class CarYearController {
     @ApiOperation(value = "汽车年款列表")
     @ApiResponses({@ApiResponse(code = 0, response =  CarYear.class, message = "获取数据成功"),})
     @GetMapping("list")
-    public ReturnValueLoader list(@RequestParam("carBrandId")@ApiParam("汽车品牌ID") Integer carBrandId) {
+    public ReturnValueLoader list(@RequestParam("seriesId")@ApiParam("汽车车系ID") Integer seriesId) {
 
-    return carYearService.list(carBrandId);
+    return carYearService.list(seriesId);
     }
 
 

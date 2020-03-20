@@ -30,7 +30,7 @@ public class User  {
     /**
     主键
     */
-    @TableId(value = "id", type = IdType.ID_WORKER)
+    @TableId(value = "id", type = IdType.AUTO)
     @TableField(value = "id",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "主键")
     private Integer id;

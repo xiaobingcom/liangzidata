@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
 import com.sandu.common.response.ReturnValueLoader;
+import com.sandu.common.util.HttpUtil;
+import com.sandu.common.util.json.GsonUtil;
+import com.sandu.erp.contract.mapper.CarSeriesMapper;
+import com.sandu.erp.contract.mapper.CarSortMapper;
 import com.sandu.erp.contract.mapper.CarYearMapper;
 import com.sandu.erp.contract.pojo.dto.CarYearDto;
 import com.sandu.erp.contract.pojo.po.CarSort;
@@ -16,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,6 +38,12 @@ public class CarYearServiceImpl implements CarYearService {
 
     @Autowired
     private CarYearMapper carYearMapper;
+
+    @Autowired
+    private CarSortMapper carSortMapper;
+
+    @Autowired
+    private CarSeriesMapper carSeriesMapper;
 
 
     /**
@@ -65,9 +76,9 @@ public class CarYearServiceImpl implements CarYearService {
         } else {
             //无ID 为新增
 
-            CarYear selectOne = this.carYearMapper.selectOne(new QueryWrapper<CarYear>().eq("brand_id", saveDto.getBrandId()).eq("name", saveDto.getName()));
+            CarYear selectOne = this.carYearMapper.selectOne(new QueryWrapper<CarYear>().eq("series_id", saveDto.getSeriesId()).eq("name", saveDto.getName()));
             if (selectOne != null) {
-                throw new BaseParamException("此品牌汽车已经存在此年款", GlobalExceptionCode.NOT_FOUND_EXCEPTION_CODE);
+                throw new BaseParamException("此车系汽车已经存在此年款", GlobalExceptionCode.NOT_FOUND_EXCEPTION_CODE);
             }
             //新建对象
             carYear = new CarYear();
@@ -100,6 +111,7 @@ public class CarYearServiceImpl implements CarYearService {
      */
     @Override
     public CarYear detail(Long id) {
+
         CarYear carYear = this.carYearMapper.selectById(id);
         //判断实体是否有数据
         if (carYear == null) {
@@ -121,8 +133,8 @@ public class CarYearServiceImpl implements CarYearService {
      * @return:
      */
     @Override
-    public ReturnValueLoader list(Integer carBrandId) {
-        List<CarYear> carYearList = this.carYearMapper.selectList(new QueryWrapper<CarYear>().eq("brand_id", carBrandId).orderByDesc("update_date"));
+    public ReturnValueLoader list(Integer seriesId) {
+        List<CarYear> carYearList = this.carYearMapper.selectList(new QueryWrapper<CarYear>().eq("series_id", seriesId).orderByDesc("update_date"));
 
         return new ReturnValueLoader(carYearList);
     }

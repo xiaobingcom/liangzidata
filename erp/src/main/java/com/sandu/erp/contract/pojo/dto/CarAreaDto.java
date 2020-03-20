@@ -1,5 +1,6 @@
 package com.sandu.erp.contract.pojo.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -24,35 +26,37 @@ import java.math.BigDecimal;
 @ToString
 public class CarAreaDto  {
 
-
-    @ApiModelProperty(value = "修改时填写ID，新增时不填写")
+    /**
+     主键
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    @TableField(value = "id",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "主键")
     private Integer id;
 
 
-
     @ApiModelProperty(value = "名字")
+    @TableField(value = "name",strategy = FieldStrategy.NOT_EMPTY)
     private String name;
-
     /**
-    车辆型号ID
-    */
+     车辆型号ID
+     */
     @TableField(value = "car_sort_id",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "车辆型号ID")
     private Integer carSortId;
 
     /**
-    价格
-    */
+     价格
+     */
     @TableField(value = "price",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "价格")
     private BigDecimal price;
 
     /**
-    图标
-    */
+     图标
+     */
     @TableField(value = "pecture",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "图标")
     private String pecture;
-
 
 }

@@ -26,20 +26,31 @@ import java.util.Date;
 @TableName(value = "tb_car_brand")
 public class CarBrandDto  {
 
-    @ApiModelProperty(value = "修改时填写ID，新增时不填写")
-    private Integer id;
 
     /**
-    汽车品牌名字
-    */
+     汽车品牌名字
+     */
     @TableField(value = "car_name",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "汽车品牌名字")
     private String carName;
 
+    /**
+     主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    @TableField(value = "id",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "主键ID")
+    private Integer id;
 
     /**
-    图标
-    */
+     * 首字母
+     */
+    @TableField(value = "firstletter",strategy = FieldStrategy.NOT_EMPTY)
+    private String firstletter;
+
+    /**
+     图标
+     */
     @TableField(value = "picture",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "图标")
     private String picture;

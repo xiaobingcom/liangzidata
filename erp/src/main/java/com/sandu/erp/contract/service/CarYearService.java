@@ -49,7 +49,7 @@ public interface CarYearService  {
      * @date: 2020-03-10
      * @return:
     */
-    ReturnValueLoader list(Integer carBrandId);
+    ReturnValueLoader list(Integer seriesId);
 
 
 
