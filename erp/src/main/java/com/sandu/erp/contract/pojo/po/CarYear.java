@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -72,5 +73,8 @@ public class CarYear  {
     @TableField(value = "creade_date",strategy = FieldStrategy.NOT_EMPTY)
     @ApiModelProperty(value = "创建时间")
     private Date creadeDate;
+
+    @TableField(exist = false)
+    private List<CarSort> carSortList;
 
 }

@@ -124,7 +124,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     public ReturnValueLoader list() {
 
 
-        List<CarBrand> carBrandList = this.carBrandMapper.selectList(new QueryWrapper<CarBrand>().orderByDesc("update_date"));
+        List<CarBrand> carBrandList = this.carBrandMapper.selectList(new QueryWrapper<CarBrand>().orderByAsc("firstletter"));
 
 
         return new ReturnValueLoader(carBrandList);

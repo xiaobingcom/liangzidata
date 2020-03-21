@@ -135,6 +135,10 @@ public class CarYearServiceImpl implements CarYearService {
     @Override
     public ReturnValueLoader list(Integer seriesId) {
         List<CarYear> carYearList = this.carYearMapper.selectList(new QueryWrapper<CarYear>().eq("series_id", seriesId).orderByDesc("update_date"));
+        for (CarYear carYear : carYearList) {
+            List<CarSort> carSorts = carSortMapper.selectList(new QueryWrapper<CarSort>().eq("series_id",seriesId).eq("year", carYear.getName()).orderByAsc("id"));
+            carYear.setCarSortList(carSorts);
+        }
 
         return new ReturnValueLoader(carYearList);
     }
