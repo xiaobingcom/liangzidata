@@ -65,21 +65,21 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
         if (uri.contains("swagger")) {
             return Boolean.TRUE;
         }
+        if (uri.contains("login")){
+            return true;
+        }
 
 
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {  //若获取不到 TOKEN 的存在
-//            response.setContentType("application/json;charset=utf-8");
-//            PrintWriter out = response.getWriter();
-//            ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
-//            out.write(GsonUtil.getJson(rvl));
-//            out.flush();
-//            out.close();
-//            return Boolean.FALSE;
-            CommonRequestHolder.init(1L, "1", 2L, "1");
-            return true;
-//            return false;
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter out = response.getWriter();
+            ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
+            out.write(GsonUtil.getJson(rvl));
+            out.flush();
+            out.close();
+            return Boolean.FALSE;
         } else {    //若存在 TOKEN
 
             //解析 TOKEN

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * 2020-02-29 10:34     xiaobing          v1.0.0           Created
  *
  */
-//@ControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
 

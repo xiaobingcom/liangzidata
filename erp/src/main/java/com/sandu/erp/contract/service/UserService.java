@@ -68,4 +68,7 @@ public interface UserService  {
 
     int updatePassword(int id,String passWord);
 
+
+    User verifyPassword(String loginName,String passWord);
+
 }

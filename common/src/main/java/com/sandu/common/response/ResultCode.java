@@ -25,7 +25,7 @@ public enum ResultCode {
     /**
      * 登陆时使用
      */
-    USERNAME_OR_PASSWORD_ERROR(1001,"用户名或密码错误"),
+    USERNAME_OR_PASSWORD_ERROR(1001,"账号尚未审核或用户名或密码错误"),
 
     /**
      * 密码输入错误次数过多

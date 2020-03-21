@@ -203,5 +203,24 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public User verifyPassword(String loginName, String passWord) {
+
+        User loginUser = this.userMapper.selectOne(new QueryWrapper<User>().eq("login_name", loginName));
+        if (loginUser==null){
+            return null;
+        }
+        if (loginUser.getStatus()==0){
+            return null;
+        }
+        String passWordMd5 = MD5Util.md5Encrypt32Upper(passWord);
+
+        if(passWordMd5.equals(loginUser.getPassWord())){
+            return loginUser;
+        }else{
+            return null;
+        }
+    }
+
 
 }

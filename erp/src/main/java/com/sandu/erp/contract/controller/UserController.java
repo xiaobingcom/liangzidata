@@ -2,6 +2,7 @@ package com.sandu.erp.contract.controller;
 
 import com.sandu.common.response.ResultCode;
 import com.sandu.common.response.ReturnValueLoader;
+import com.sandu.common.util.security.JWTUtil;
 import com.sandu.erp.contract.pojo.dto.GetUserDto;
 import com.sandu.erp.contract.pojo.dto.UserDto;
 import com.sandu.erp.contract.pojo.po.User;
@@ -118,7 +119,7 @@ public class UserController {
             @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
     })
     @GetMapping("editPassword")
-    public ReturnValueLoader updatePassword(@RequestParam("id") @ApiParam("用户表ID")Integer id,@ApiParam("用户密码")@RequestParam("passWord")String passWord) {
+    public ReturnValueLoader updatePassword(@RequestParam("id") @ApiParam("用户表ID")Integer id,@ApiParam("olePassWord") String oldPassWord,@ApiParam("用户密码")@RequestParam("passWord")String passWord) {
 
         int examineCount = this.userService.updatePassword(id,passWord);
         return ReturnValueLoader.validatorCount(examineCount);
@@ -137,10 +138,16 @@ public class UserController {
             @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
     })
     @PostMapping("login")
-    public ReturnValueLoader login(@RequestParam @ApiParam("用户表ID") Integer id) {
+    public ReturnValueLoader login(@RequestParam @ApiParam("登录用户名") String loginName,@ApiParam("登录密码") String passWord) {
 
-        int examineCount = this.userService.examine(id);
-        return ReturnValueLoader.validatorCount(examineCount);
+        User user = this.userService.verifyPassword(loginName, passWord);
+        if (user==null){
+            return new ReturnValueLoader(ResultCode.USERNAME_OR_PASSWORD_ERROR);
+        }
+
+        String token = JWTUtil.getInstance().generateToken(user.getId()+"",user.getLoginName(),14400 , "meaqua");
+
+        return new ReturnValueLoader(token);
     }
     /**
      * 功能描述: 用户表审核
