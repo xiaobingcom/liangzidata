@@ -119,9 +119,9 @@ public class UserController {
             @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
     })
     @GetMapping("editPassword")
-    public ReturnValueLoader updatePassword(@RequestParam("id") @ApiParam("用户表ID")Integer id,@ApiParam("olePassWord") String oldPassWord,@ApiParam("用户密码")@RequestParam("passWord")String passWord) {
+    public ReturnValueLoader updatePassword(@RequestParam@ApiParam("olePassWord") String oldPassWord,@ApiParam("用户密码")@RequestParam("passWord")String passWord) {
 
-        int examineCount = this.userService.updatePassword(id,passWord);
+        int examineCount = this.userService.updatePassword(oldPassWord,passWord);
         return ReturnValueLoader.validatorCount(examineCount);
     }
 

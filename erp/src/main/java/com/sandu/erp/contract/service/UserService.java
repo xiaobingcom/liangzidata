@@ -66,7 +66,7 @@ public interface UserService  {
 
     int examine(Integer id);
 
-    int updatePassword(int id,String passWord);
+    int updatePassword(String oldPassWord,String passWord);
 
 
     User verifyPassword(String loginName,String passWord);

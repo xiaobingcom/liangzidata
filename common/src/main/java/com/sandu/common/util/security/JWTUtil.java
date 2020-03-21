@@ -46,12 +46,12 @@ public class JWTUtil {
      * @param exp    过期时间，单位分钟
      * @return 生成的JWT TOKEN
      */
-    public String generateToken(String userId, String unitId, int exp, String secret) {
+    public String generateToken(String userId, String userName, int exp, String secret) {
 
         HashMap<String, Object> map = new HashMap<>();
         //也可以放置一些其他的参数
         map.put("userId", userId);
-        map.put("unitId", unitId);
+        map.put("userName", userName);
 
         long endTime = System.currentTimeMillis() + 1000 * 60 * exp;
 
@@ -84,18 +84,18 @@ public class JWTUtil {
                     .getBody();
 
 
-            return new JWTResult(true, body.get("userId").toString(),body.get("unitId").toString(),null, ResultCode.SUCCESS.getMsg(), ResultCode.SUCCESS.getCode());
+            return new JWTResult(true, body.get("userId").toString(),body.get("userName").toString(), ResultCode.SUCCESS.getMsg(), ResultCode.SUCCESS.getCode());
 
 
            //return new JWTResult(true, body.get("userId").toString(),body.get("unitId").toString(),body.get("username").toString(), ResultCode.SUCCESS.getMsg(), ResultCode.SUCCESS.getCode());
 
         } catch (ExpiredJwtException e) {       //若TOKEN过期则直接抛错
-            return new JWTResult(false,null,null, null, ResultCode.TOKEN_TIME_OUT.getMsg(), ResultCode.TOKEN_TIME_OUT.getCode());
+            return new JWTResult(false,null,null, ResultCode.TOKEN_TIME_OUT.getMsg(), ResultCode.TOKEN_TIME_OUT.getCode());
         } catch (SignatureException e) {        //若签名验证失败则直接抛错
-            return new JWTResult(false,null,null, null,ResultCode.NO_AUTH_CODE.getMsg(), ResultCode.NO_AUTH_CODE.getCode());
+            return new JWTResult(false,null,null,ResultCode.NO_AUTH_CODE.getMsg(), ResultCode.NO_AUTH_CODE.getCode());
         }catch (Exception e) {
             e.printStackTrace();
-            return new JWTResult(false, null,null,null,ResultCode.NO_AUTH_CODE.getMsg(), ResultCode.NO_AUTH_CODE.getCode());
+            return new JWTResult(false, null,null,ResultCode.NO_AUTH_CODE.getMsg(), ResultCode.NO_AUTH_CODE.getCode());
         }
 
     }
@@ -119,9 +119,8 @@ public class JWTUtil {
          */
         private String userId;
 
-        private String unitId;
+        private String userName;
 
-        private String username;
 
 
 
@@ -141,11 +140,10 @@ public class JWTUtil {
             super();
         }
 
-        public JWTResult(boolean status, String userId, String unitId, String username, String msg, int code) {
+        public JWTResult(boolean status, String userId, String userName, String msg, int code) {
             this.status = status;
             this.userId = userId;
-            this.unitId = unitId;
-            this.username = username;
+            this.userName = userName;
             this.msg = msg;
             this.code = code;
         }
@@ -182,20 +180,12 @@ public class JWTUtil {
             this.userId = userId;
         }
 
-        public String getUnitId() {
-            return unitId;
+        public String getUserName() {
+            return userName;
         }
 
-        public void setUnitId(String unitId) {
-            this.unitId = unitId;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
     }
 

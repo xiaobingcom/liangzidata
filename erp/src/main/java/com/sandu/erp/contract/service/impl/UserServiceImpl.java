@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
 import com.sandu.common.response.ReturnValueLoader;
+import com.sandu.common.util.CommonRequestHolder;
 import com.sandu.common.util.MD5Util;
 import com.sandu.erp.contract.mapper.UserMapper;
 import com.sandu.erp.contract.pojo.dto.GetUserDto;
@@ -190,13 +191,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updatePassword(int id,String passWord) {
-        //根据当前ID查询实体
-        User user = this.userMapper.selectById(id);
+    public int updatePassword(String oldPassWord,String passWord) {
 
-        //判断查询的信息是否为空.如果为空,返回提示信息
-        if (user == null) {
-            throw new BaseParamException("数据不合法", GlobalExceptionCode.METHOD_ARGUMENT_EXCEPTION_CODE);
+        User user = this.verifyPassword(CommonRequestHolder.getCurrentUserName(), oldPassWord);
+
+        if (user==null){
+            return 0;
         }
         user.setPassWord(MD5Util.md5Encrypt32Upper(passWord));
         return this.userMapper.updateById(user);

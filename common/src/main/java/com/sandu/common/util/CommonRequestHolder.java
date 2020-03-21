@@ -2,6 +2,7 @@ package com.sandu.common.util;
 
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
+import io.swagger.models.auth.In;
 
 import java.time.LocalDateTime;
 
@@ -27,24 +28,12 @@ public class CommonRequestHolder {
     /**
      * 记录当前线程操作用户主键 ID
      */
-    public static final ThreadLocal<Long> currentUserId = new ThreadLocal<>();
+    public static final ThreadLocal<Integer> currentUserId = new ThreadLocal<>();
 
     /**
      * 记录当前线程操作用户名称
      */
     public static final ThreadLocal<String> currentUserName = new ThreadLocal<>();
-
-    /**
-     * 记录当前线程操作用户所属单位主键 ID
-     */
-    public static final ThreadLocal<Long> currentUnitId = new ThreadLocal<>();
-
-    /**
-     * 记录当前线程操作用户所属单位名称
-     */
-    public static final ThreadLocal<String> currentUnitName = new ThreadLocal<>();
-
-
     /**
      * 记录当前线程的统一时间错
      */
@@ -54,30 +43,14 @@ public class CommonRequestHolder {
     /**
      * 初始化数据，userName和unitName 均为 NULL
      * @param userId
-     * @param unitId
+     * @param userName
      */
-    public static void init(Long userId, Long unitId) {
+    public static void init(Integer userId, String userName) {
         currentUserId.set(userId);
-        currentUnitId.set(unitId);
+        currentUserName.set(userName);
         currentTimestamp.set(LocalDateTime.now());
 
         isInit.set(true);
-    }
-
-    /**
-     * 初始化数据
-     * @param userId
-     * @param userName
-     * @param unitId
-     * @param unitName
-     */
-    public static void init(Long userId, String userName, Long unitId, String unitName) {
-
-        currentUserName.set(userName);
-        currentUnitName.set(unitName);
-
-        init(userId, unitId);
-
     }
 
 
@@ -93,26 +66,14 @@ public class CommonRequestHolder {
      * 获取当前用户ID
      * @return
      */
-    public static Long getCurrentUserId() {
-        Long userId = currentUserId.get();
+    public static Integer getCurrentUserId() {
+        Integer userId = currentUserId.get();
 
         isInit();
 
         return userId;
     }
 
-
-    /**
-     * 获取当前单位 ID
-     * @return
-     */
-    public static Long getCurrentUnitId() {
-        Long unitId = currentUnitId.get();
-
-        isInit();
-
-        return unitId;
-    }
 
     /**
      * 获取当前统一时间戳
@@ -139,28 +100,13 @@ public class CommonRequestHolder {
 
         return userName;
     }
-
-    /**
-     * 获取当前单位名称
-     * @return
-     */
-    public static String getCurrentUnitName() {
-
-        String unitName = currentUnitName.get();
-
-        isInit();
-
-        return unitName;
-    }
-    /**
+   /**
      * 关闭
      */
     public static void close() {
         isInit.remove();
         currentUserName.remove();
-        currentUnitId.remove();
         currentUserId.remove();
-        currentUnitName.remove();
         currentTimestamp.remove();
     }
 

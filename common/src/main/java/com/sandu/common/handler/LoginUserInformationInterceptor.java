@@ -92,7 +92,7 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
                 从 TOKEN 中得到解密出来的 userId 和 unitId
                  */
                 int userId = Integer.parseInt(jwtResult.getUserId());
-                int unitId = Integer.parseInt(jwtResult.getUnitId());
+                String userName = jwtResult.getUserName();
 
                 //同 JedisPool 中得到一个链接
                 Jedis jedis = this.jedisPool.getResource();
@@ -109,7 +109,7 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
                 //初始化当前线程登陆用户状态
                 //CommonRequestHolder.init((long)userId, redisUser.getRealName(), Long.parseLong(redisUser.getOrganizationId()), redisUser.getOrganizationName());
 
-                CommonRequestHolder.init((long)userId, redisUser.getRealName(), (long)unitId, redisUser.getOrganizationName());
+                CommonRequestHolder.init((int)userId,userName);
 
 
 
