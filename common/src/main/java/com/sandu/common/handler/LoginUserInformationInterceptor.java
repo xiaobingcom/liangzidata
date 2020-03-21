@@ -65,10 +65,12 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
         if (uri.contains("swagger")) {
             return Boolean.TRUE;
         }
-        if (uri.contains("login")){
+        if (uri.contains("User/login")){
             return true;
         }
-
+        if (uri.contains("User/set")){
+            return true;
+        }
 
         String header = request.getHeader("Authorization");
 

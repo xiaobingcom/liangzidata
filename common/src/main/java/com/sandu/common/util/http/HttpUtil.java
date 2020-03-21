@@ -140,7 +140,7 @@ public enum HttpUtil {
             conn.setDoInput(true);
             conn.setUseCaches(false);
             conn.setRequestProperty("userId",""+ CommonRequestHolder.getCurrentUserId());//设置请求头
-            conn.setRequestProperty("unitId", ""+CommonRequestHolder.getCurrentUnitId());//设置请求头
+            conn.setRequestProperty("userName", ""+CommonRequestHolder.getCurrentUserName());//设置请求头
 
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Charset", "UTF-8");

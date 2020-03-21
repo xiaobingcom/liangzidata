@@ -40,7 +40,7 @@ public class UserController {
      * @date: 2020-03-10
      * @return:
      */
-    @PutMapping
+    @PutMapping("set")
     @ApiOperation(value = "新增用户表")
     @ApiResponses({@ApiResponse(code = 0, response = int.class, message = "获取数据成功")})
     public ReturnValueLoader put(@Valid @RequestBody UserDto saveDto) {
@@ -138,7 +138,7 @@ public class UserController {
             @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
     })
     @PostMapping("login")
-    public ReturnValueLoader login(@RequestParam @ApiParam("登录用户名") String loginName,@ApiParam("登录密码") String passWord) {
+    public ReturnValueLoader login(@RequestParam @ApiParam("登录用户名") String loginName,@RequestParam@ApiParam("登录密码") String passWord) {
 
         User user = this.userService.verifyPassword(loginName, passWord);
         if (user==null){

@@ -42,11 +42,5 @@ public class UserDto  {
     @ApiModelProperty(value = "密码")
     private String passWord;
 
-    /**
-    状态
-    */
-    @TableField(value = "status",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "状态")
-    private Integer status;
 
 }

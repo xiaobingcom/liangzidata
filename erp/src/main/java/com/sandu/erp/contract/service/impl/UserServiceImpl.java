@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 throw new BaseParamException("主键ID不存在", GlobalExceptionCode.NOT_FOUND_EXCEPTION_CODE);
             }
-            saveDto.setPassWord(user.getPassWord());
+
         } else {
             //无ID 为新增
             User selectOne = this.userMapper.selectOne(new QueryWrapper<User>().eq("login_name", saveDto.getLoginName()));
@@ -80,13 +80,14 @@ public class UserServiceImpl implements UserService {
             //初始化对象
             saveDto.setId(null);
             user.setStatus(0);
-            user.setPassWord(MD5Util.md5Encrypt32Upper(saveDto.getPassWord()));
+
             user.setCreadeDate(new Date());
         }
+        BeanUtils.copyProperties(saveDto, user);
 
+        user.setPassWord(MD5Util.md5Encrypt32Upper(saveDto.getPassWord()));
         //设置必改项
         user.setUpdateDate(new Date());
-        BeanUtils.copyProperties(saveDto, user);
 
         //修改或新增
         if (saveDto.getId() != null && saveDto.getId() != 0L) {
