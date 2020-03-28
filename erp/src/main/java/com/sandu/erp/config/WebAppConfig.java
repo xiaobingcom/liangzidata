@@ -1,7 +1,9 @@
-package com.sandu.common.config;
+package com.sandu.erp.config;
 
 import com.sandu.common.handler.LoginUserInformationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -17,6 +19,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.File;
+
 /**
  * Mvc 配置
  * @author xiaobing
@@ -30,13 +34,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * 2020-02-28 14:44     xiaobing          v1.0.0           Created
  *
  */
+
+
+
 @Configuration
 @EnableSwagger2
 public class WebAppConfig extends WebMvcConfigurationSupport {
 
 
+
     @Autowired
     private LoginUserInformationInterceptor loginUserInformationInterceptor;
+
+   @Value("${template.save.path}")
+    private String path;
 
     /**
      * 设置Swagger2扫描哪个包下面的API
@@ -100,6 +111,17 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
 
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
+
+        ApplicationHome h = new ApplicationHome(getClass());
+        File jarF = h.getSource();
+        String imgPath = jarF.getParentFile().toString();
+
+        System.out.println(imgPath+"/static/");
+
+        registry.addResourceHandler("/image/**")
+                .addResourceLocations("file:"+path);
+
+        super.addResourceHandlers(registry);
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");

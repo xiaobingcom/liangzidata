@@ -71,4 +71,13 @@ public class CarBrand  {
     @ApiModelProperty(value = "图标")
     private String picture;
 
+
+    /**
+     图标
+     */
+    @TableField(value = "image",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "图片")
+    private String image;
+
+
 }

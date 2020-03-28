@@ -22,6 +22,7 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>com.sandu.common</groupId>
             <artifactId>common</artifactId>

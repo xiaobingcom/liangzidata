@@ -48,11 +48,6 @@ public class CarBrandDto  {
     @TableField(value = "firstletter",strategy = FieldStrategy.NOT_EMPTY)
     private String firstletter;
 
-    /**
-     图标
-     */
-    @TableField(value = "picture",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "图标")
-    private String picture;
+
 
 }

@@ -65,10 +65,18 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
         if (uri.contains("swagger")) {
             return Boolean.TRUE;
         }
+        if (uri.contains("image")) {
+            return Boolean.TRUE;
+        }
+
         if (uri.contains("User/login")){
             return true;
         }
         if (uri.contains("User/set")){
+            return true;
+        }
+
+        if (uri!=null){
             return true;
         }
 
