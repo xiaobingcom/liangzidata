@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
 import com.sandu.common.response.ReturnValueLoader;
+import com.sandu.common.util.CommonRequestHolder;
 import com.sandu.erp.contract.mapper.CarSortMapper;
 import com.sandu.erp.contract.pojo.dto.CarSortDto;
 import com.sandu.erp.contract.pojo.po.CarSort;
@@ -72,6 +73,7 @@ public class CarSortServiceImpl  implements CarSortService {
         //初始化对象
         saveDto.setId(null);
         carSort.setCreateDate(new Date());
+            CommonRequestHolder.getCurrentUserId();
         }
         //设置必改项
         carSort.setUpdateDate(new Date());

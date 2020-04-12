@@ -4,7 +4,10 @@
 
     <select id="searchByPage" resultType="com.sandu.erp.contract.pojo.po.User">
 
-      select * from tb_user where status = #{status};
+      select * from tb_user where 1=1
+
+       and
+       status = #{status};
     </select>
 
 </mapper>

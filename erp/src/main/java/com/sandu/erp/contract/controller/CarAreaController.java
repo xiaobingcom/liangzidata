@@ -1,15 +1,21 @@
 package com.sandu.erp.contract.controller;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.sandu.common.response.ResultCode;
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.erp.contract.pojo.dto.CarAreaDto;
+import com.sandu.erp.contract.pojo.dto.CarPriceDto;
 import com.sandu.erp.contract.pojo.po.CarArea;
 import com.sandu.erp.contract.service.CarAreaService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 汽车区域 控制层
@@ -41,7 +47,7 @@ public class CarAreaController {
     @PutMapping
     @ApiOperation(value = "新增汽车区域")
     @ApiResponses({@ApiResponse(code = 0, response = int.class, message = "获取数据成功")})
-    public ReturnValueLoader put(@Valid @RequestBody CarAreaDto saveDto) {
+    public ReturnValueLoader put(@Valid @RequestBody List<CarAreaDto> saveDto) {
 
         int id = carAreaService.put(saveDto);
         return new ReturnValueLoader(id);
@@ -80,11 +86,29 @@ public class CarAreaController {
     @ApiOperation(value = "汽车区域列表")
     @ApiResponses({@ApiResponse(code = 0, response = CarArea.class, message = "获取数据成功"),})
     @GetMapping("list")
-    public ReturnValueLoader list(@RequestParam("carSortId")@ApiParam("汽车型号ID") Integer carSortId) {
+    public ReturnValueLoader list(@RequestParam("carSeriesId")@ApiParam("汽车型号ID") Integer carSeriesId) {
 
-        return carAreaService.list(carSortId);
+        return carAreaService.list(carSeriesId);
     }
 
+
+
+    /**
+     * 功能描述: 汽车区域列表
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+
+    @ApiOperation(value = "汽车区域小程序列表")
+    @ApiResponses({@ApiResponse(code = 0, response = CarArea.class, message = "获取数据成功"),})
+    @GetMapping("appList")
+    public ReturnValueLoader appList(@RequestParam("carSeriesId")@ApiParam("汽车型号ID") Integer carSeriesId) {
+
+        return carAreaService.appList(carSeriesId);
+    }
     /**
      * 功能描述: 汽车区域移除
      *
@@ -102,6 +126,22 @@ public class CarAreaController {
 
         int deleteCount = this.carAreaService.delete(id);
         return ReturnValueLoader.validatorCount(deleteCount);
+    }
+
+    @ApiModelProperty
+    @PostMapping("input")
+    public ReturnValueLoader input(@RequestParam("file") MultipartFile file){
+
+        ImportParams importParams = new ImportParams();
+        List<CarPriceDto> list = null;
+        try {
+            list = ExcelImportUtil.importExcel(file.getInputStream(), CarPriceDto.class, importParams);
+           return this.carAreaService.input(list);
+
+
+        } catch (Exception e) {
+           return new ReturnValueLoader(e.getMessage());
+        }
     }
 
 

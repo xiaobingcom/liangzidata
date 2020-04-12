@@ -1,12 +1,16 @@
 package com.sandu.erp.contract.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.erp.contract.mapper.CarBrandMapper;
 import com.sandu.erp.contract.pojo.dto.CarBrandDto;
+import com.sandu.erp.contract.pojo.dto.CarBrandSearchDto;
 import com.sandu.erp.contract.pojo.po.CarBrand;
+import com.sandu.erp.contract.pojo.po.User;
 import com.sandu.erp.contract.service.CarBrandService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +67,7 @@ public class CarBrandServiceImpl implements CarBrandService {
             }
         } else {
             //无ID 为新增
-            CarBrand selectOne = this.carBrandMapper.selectOne(new QueryWrapper<CarBrand>().eq("carName", saveDto.getCarName()));
+            CarBrand selectOne = this.carBrandMapper.selectOne(new QueryWrapper<CarBrand>().eq("car_name", saveDto.getCarName()));
             if (selectOne != null) {
                 throw new BaseParamException("此品牌已经存在", GlobalExceptionCode.NOT_FOUND_EXCEPTION_CODE);
 
@@ -159,6 +163,22 @@ public class CarBrandServiceImpl implements CarBrandService {
         //       }
         //执行删
         return this.carBrandMapper.deleteById(id);
+    }
+
+    @Override
+    public ReturnValueLoader list(CarBrandSearchDto searchDto) {
+
+
+        QueryWrapper<CarBrand> queryWrapper = new QueryWrapper<>();
+        if (searchDto.getName()!=null) {
+            queryWrapper.like("car_name", "%" + searchDto.getName() + "%");
+        }
+
+        //设置分页,pageNum不可以是空,是空的话会报空指针异常
+        Page<CarBrand> voPage = new Page<>(searchDto.getPageNumber(), searchDto.getPageSize());
+
+        IPage<CarBrand> carBrandIPage = this.carBrandMapper.selectPage(voPage, queryWrapper);
+        return new ReturnValueLoader(carBrandIPage);
     }
 
 

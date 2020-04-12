@@ -37,15 +37,18 @@ public class CarArea  {
     private Integer id;
 
 
-    @ApiModelProperty(value = "名字")
+    @ApiModelProperty(value = "名字比如天窗")
     @TableField(value = "name",strategy = FieldStrategy.NOT_EMPTY)
     private String name;
+
+    @TableField(value = "combo",strategy = FieldStrategy.NOT_EMPTY)
+    private String combo;
     /**
     车辆型号ID
     */
-    @TableField(value = "car_sort_id",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "车辆型号ID")
-    private Integer carSortId;
+    @TableField(value = "car_series_id",strategy = FieldStrategy.NOT_EMPTY)
+    @ApiModelProperty(value = "车辆车系ID")
+    private Integer carSeriesId;
 
     /**
     价格
@@ -54,12 +57,7 @@ public class CarArea  {
     @ApiModelProperty(value = "价格")
     private BigDecimal price;
 
-    /**
-    图标
-    */
-    @TableField(value = "pecture",strategy = FieldStrategy.NOT_EMPTY)
-    @ApiModelProperty(value = "图标")
-    private String pecture;
+
 
     /**
     修改时间

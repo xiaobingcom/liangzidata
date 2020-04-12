@@ -112,11 +112,7 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
-        ApplicationHome h = new ApplicationHome(getClass());
-        File jarF = h.getSource();
-        String imgPath = jarF.getParentFile().toString();
 
-        System.out.println(imgPath+"/static/");
 
         registry.addResourceHandler("/image/**")
                 .addResourceLocations("file:"+path);

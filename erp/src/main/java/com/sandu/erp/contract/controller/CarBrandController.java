@@ -1,13 +1,19 @@
 package com.sandu.erp.contract.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sandu.common.response.ResultCode;
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.common.util.FileUtil;
 import com.sandu.erp.contract.mapper.CarBrandMapper;
 import com.sandu.erp.contract.pojo.dto.CarBrandDto;
+import com.sandu.erp.contract.pojo.dto.CarBrandSearchDto;
 import com.sandu.erp.contract.pojo.po.CarBrand;
 import com.sandu.erp.contract.service.CarBrandService;
 import io.swagger.annotations.*;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.system.ApplicationHome;
@@ -15,10 +21,15 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.List;
 
 /**
  * 汽车品牌表 控制层
@@ -42,9 +53,9 @@ public class CarBrandController {
     private CarBrandMapper carBrandMapper;
 
 
-
     @Value("${template.save.path}")
     private String filePath;
+
     /**
      * 功能描述: 新增汽车品牌表
      *
@@ -96,6 +107,24 @@ public class CarBrandController {
     public ReturnValueLoader list() {
 
         return carBrandService.list();
+    }
+
+
+    /**
+     * 功能描述: 汽车品牌表列表
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+
+    @ApiOperation(value = "汽车品牌表列表")
+    @ApiResponses({@ApiResponse(code = 0, response = CarBrand.class, message = "获取数据成功"),})
+    @PostMapping("search")
+    public ReturnValueLoader search(@RequestBody CarBrandSearchDto searchDto) {
+
+        return carBrandService.list(searchDto);
     }
 
 
@@ -170,7 +199,7 @@ public class CarBrandController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             return ReturnValueLoader.validatorCount(0);
 
         }
@@ -178,5 +207,36 @@ public class CarBrandController {
 
         return ReturnValueLoader.validatorCount(i);
     }
+
+
+    /**
+     * 功能描述: 汽车品牌表移除
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+    @ApiOperation(value = "汽车品牌表图片测试", notes = "测试")
+    @ApiResponses({
+            @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
+    })
+    @GetMapping("test")
+    public ReturnValueLoader test() {
+
+
+        List<CarBrand> carBrands = this.carBrandMapper.selectList(new QueryWrapper<>());
+        for (CarBrand carBrand : carBrands) {
+            if (carBrand.getPicture() != null && !"".equals(carBrand.getPicture())) {
+                String url = FileUtil.load("http:" + carBrand.getPicture(), filePath + carBrand.getCarName() + "picture.jpg");
+                carBrand.setPicture("/image/" + carBrand.getCarName() + "picture.jpg");
+                carBrandMapper.updateById(carBrand);
+            }
+        }
+        return new ReturnValueLoader(ResultCode.SUCCESS);
+
+
+    }
+
 
 }

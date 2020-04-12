@@ -1,6 +1,7 @@
 package com.sandu.erp.contract.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sandu.common.exception.BaseParamException;
 import com.sandu.common.exception.GlobalExceptionCode;
@@ -136,14 +137,17 @@ public class UserServiceImpl implements UserService {
 
         //设置分页,pageNum不可以是空,是空的话会报空指针异常
         Page<User> voPage = new Page<>(searchDto.getPageNum(), searchDto.getPageSize());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if (searchDto.getStatus()!=null&&searchDto.getStatus()>=0){
+            queryWrapper.eq("status",searchDto.getStatus());
+        }
 
         //根据条件查询合同集合，使用插件进行分页
-        List<User> userList = this.userMapper.searchByPage(voPage, searchDto.getStatus());
+        IPage<User> userIPage = this.userMapper.selectPage(voPage, queryWrapper);
 
-        //将数据放入分页插件中
-        voPage.setRecords(userList);
 
-        return new ReturnValueLoader(voPage);
+
+        return new ReturnValueLoader(userIPage);
     }
 
     /**

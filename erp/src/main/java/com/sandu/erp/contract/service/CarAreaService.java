@@ -3,7 +3,10 @@ package com.sandu.erp.contract.service;
 
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.erp.contract.pojo.dto.CarAreaDto;
+import com.sandu.erp.contract.pojo.dto.CarPriceDto;
 import com.sandu.erp.contract.pojo.po.CarArea;
+
+import java.util.List;
 
 /**
  * 汽车区域 接口层
@@ -26,7 +29,7 @@ public interface CarAreaService  {
      * @date: 2020-03-10
      * @return:
     */
-    Integer put(CarAreaDto saveDto);
+    Integer put(List<CarAreaDto> saveDto);
 
 
     /**
@@ -49,7 +52,7 @@ public interface CarAreaService  {
      * @date: 2020-03-10
      * @return:
     */
-    ReturnValueLoader list(Integer carSortId);
+    ReturnValueLoader list(Integer carSeriesId);
 
 
 
@@ -63,4 +66,8 @@ public interface CarAreaService  {
      * @return:
      */
     int delete(Long id);
-    }
+
+    ReturnValueLoader input(List<CarPriceDto> list);
+
+    ReturnValueLoader appList(Integer carSeriesId);
+}

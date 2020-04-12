@@ -2,6 +2,7 @@ package com.sandu.erp.contract.service;
 
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.erp.contract.pojo.dto.CarBrandDto;
+import com.sandu.erp.contract.pojo.dto.CarBrandSearchDto;
 import com.sandu.erp.contract.pojo.po.CarBrand;
 
 
@@ -61,4 +62,6 @@ public interface CarBrandService  {
      * @return:
      */
     int delete(Long id);
-    }
+
+    ReturnValueLoader list(CarBrandSearchDto searchDto);
+}

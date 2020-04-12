@@ -1,7 +1,19 @@
 package com.sandu.common.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import org.apache.poi.openxml4j.opc.internal.ContentType;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.UUID;
 
 public class FileUtil {
@@ -35,5 +47,38 @@ public class FileUtil {
 
     public static String renameToUUID(String fileName) {
         return UUID.randomUUID() + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
+
+    public static String load(String urlList, String name) {
+        String fileName = "";
+        URL url = null;
+        try {
+            url = new URL(urlList);
+            DataInputStream dataInputStream = new DataInputStream(url.openStream());
+
+            String imageName = name;
+
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(imageName));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+            byte[] buffer = new byte[1024];
+            int length;
+
+            while ((length = dataInputStream.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            byte[] context = output.toByteArray();
+            fileOutputStream.write(output.toByteArray());
+            dataInputStream.close();
+            fileOutputStream.close();
+            return imageName;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "失败";
     }
 }
