@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sandu.common.response.ResultCode;
 import com.sandu.common.response.ReturnValueLoader;
 import com.sandu.common.util.FileUtil;
+import com.sandu.common.util.NoUtil;
+import com.sandu.erp.contract.mapper.BannerMapper;
 import com.sandu.erp.contract.mapper.CarBrandMapper;
 import com.sandu.erp.contract.pojo.dto.CarBrandDto;
 import com.sandu.erp.contract.pojo.dto.CarBrandSearchDto;
+import com.sandu.erp.contract.pojo.po.Banner;
 import com.sandu.erp.contract.pojo.po.CarBrand;
 import com.sandu.erp.contract.service.CarBrandService;
 import io.swagger.annotations.*;
@@ -29,7 +32,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 汽车品牌表 控制层
@@ -51,6 +56,8 @@ public class CarBrandController {
     private CarBrandService carBrandService;
     @Autowired
     private CarBrandMapper carBrandMapper;
+    @Autowired
+    private BannerMapper bannerMapper;
 
 
     @Value("${template.save.path}")
@@ -147,6 +154,109 @@ public class CarBrandController {
         return ReturnValueLoader.validatorCount(deleteCount);
     }
 
+
+
+    /**
+     * 功能描述: 汽车品牌上传图片
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+    @ApiOperation(value = "获取banner", notes = "banner图片")
+    @ApiResponses({
+            @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
+    })
+    @GetMapping("banner")
+    public ReturnValueLoader getBanner() {
+        List<Banner> banners = this.bannerMapper.selectList(new QueryWrapper<>());
+        return new ReturnValueLoader(banners);
+
+    }
+
+
+    /**
+     * 功能描述: 汽车品牌上传图片
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+    @ApiOperation(value = "删除banner", notes = "banner图片")
+    @ApiResponses({
+            @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
+    })
+    @GetMapping("delBanner")
+    public ReturnValueLoader delBanner(@RequestParam Integer id) {
+        int i = this.bannerMapper.deleteById(id);
+        return  ReturnValueLoader.validatorCount(i);
+
+    }
+
+    /**
+     * 功能描述: 汽车品牌上传图片
+     *
+     * @param:
+     * @auther: xiaobing
+     * @date: 2020-03-10
+     * @return:
+     */
+    @ApiOperation(value = "上传banner", notes = "banner图片")
+    @ApiResponses({
+            @ApiResponse(code = 0, response = ReturnValueLoader.class, message = "success"),
+    })
+    @PostMapping("banner")
+    public ReturnValueLoader putBanner(@RequestParam("file") MultipartFile file, @RequestParam(value = "id",required=false) @ApiParam("轮播图ID，不传位空") String bannerId) {
+        if (file == null) {
+            return ReturnValueLoader.validatorCount(0);
+        }
+
+        ApplicationHome h = new ApplicationHome(getClass());
+        File jarF = h.getSource();
+        System.out.println(jarF.getParentFile().toString());
+
+        String path = filePath;
+
+        Banner banner;
+        if (bannerId == null){
+
+            banner = new Banner();
+        }else{
+             banner = bannerMapper.selectById(bannerId);
+            if (banner == null) {
+                return ReturnValueLoader.validatorCount(0);
+
+            }
+
+        }
+
+        String fileNameOld = file.getOriginalFilename();
+
+        String suffixes = "." + fileNameOld.substring(fileNameOld.lastIndexOf(".") + 1);
+
+
+
+            String fileName =NoUtil.INSTANCE.generate(NoUtil.PREFIX_INVOICE)+ "banner" + suffixes;
+            try {
+                FileUtil.uploadFile(file.getBytes(), path, fileName);
+                banner.setUrl("/image/" + fileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (bannerId==null){
+                int insert = this.bannerMapper.insert(banner);
+                return ReturnValueLoader.validatorCount(insert);
+
+            }else{
+                int update = this.bannerMapper.updateById(banner);
+                return ReturnValueLoader.validatorCount(update);
+
+            }
+
+    }
 
     /**
      * 功能描述: 汽车品牌上传图片
