@@ -115,7 +115,7 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
 
 
         registry.addResourceHandler("/image/**")
-                .addResourceLocations("file:"+path);
+                .addResourceLocations("file:/opt/phone/");
 
         super.addResourceHandlers(registry);
 

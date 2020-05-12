@@ -129,7 +129,11 @@ public class CarBrandServiceImpl implements CarBrandService {
 
 
         List<CarBrand> carBrandList = this.carBrandMapper.selectList(new QueryWrapper<CarBrand>().orderByAsc("firstletter"));
+        for (CarBrand carBrand : carBrandList) {
+            carBrand.setImage("https://www.liangzimo.ltd"+carBrand.getImage());
+            carBrand.setPicture("https://www.liangzimo.ltd"+carBrand.getPicture());
 
+        }
 
         return new ReturnValueLoader(carBrandList);
     }
@@ -178,6 +182,14 @@ public class CarBrandServiceImpl implements CarBrandService {
         Page<CarBrand> voPage = new Page<>(searchDto.getPageNumber(), searchDto.getPageSize());
 
         IPage<CarBrand> carBrandIPage = this.carBrandMapper.selectPage(voPage, queryWrapper);
+        for (CarBrand carBrand :carBrandIPage.getRecords()) {
+
+            carBrand.setPicture("https://www.liangzimo.ltd"+carBrand.getPicture());
+            carBrand.setImage("https://www.liangzimo.ltd"+carBrand.getImage());
+
+
+        }
+
         return new ReturnValueLoader(carBrandIPage);
     }
 

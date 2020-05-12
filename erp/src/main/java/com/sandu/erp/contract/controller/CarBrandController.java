@@ -171,6 +171,12 @@ public class CarBrandController {
     @GetMapping("banner")
     public ReturnValueLoader getBanner() {
         List<Banner> banners = this.bannerMapper.selectList(new QueryWrapper<>());
+        for (Banner banner : banners) {
+
+            banner.setUrl("https://www.liangzimo.ltd"+banner.getUrl());
+
+        }
+
         return new ReturnValueLoader(banners);
 
     }
@@ -213,9 +219,7 @@ public class CarBrandController {
             return ReturnValueLoader.validatorCount(0);
         }
 
-        ApplicationHome h = new ApplicationHome(getClass());
-        File jarF = h.getSource();
-        System.out.println(jarF.getParentFile().toString());
+
 
         String path = filePath;
 
@@ -231,14 +235,16 @@ public class CarBrandController {
             }
 
         }
+        banner.setUrl("new");
 
         String fileNameOld = file.getOriginalFilename();
 
         String suffixes = "." + fileNameOld.substring(fileNameOld.lastIndexOf(".") + 1);
 
+        int insert = this.bannerMapper.insert(banner);
 
 
-            String fileName =NoUtil.INSTANCE.generate(NoUtil.PREFIX_INVOICE)+ "banner" + suffixes;
+            String fileName =  banner.getId()+"banner" + suffixes;
             try {
                 FileUtil.uploadFile(file.getBytes(), path, fileName);
                 banner.setUrl("/image/" + fileName);
@@ -247,7 +253,6 @@ public class CarBrandController {
             }
 
             if (bannerId==null){
-                int insert = this.bannerMapper.insert(banner);
                 return ReturnValueLoader.validatorCount(insert);
 
             }else{
@@ -275,10 +280,6 @@ public class CarBrandController {
         if (file == null) {
             return ReturnValueLoader.validatorCount(0);
         }
-
-        ApplicationHome h = new ApplicationHome(getClass());
-        File jarF = h.getSource();
-        System.out.println(jarF.getParentFile().toString());
 
         String path = filePath;
 
