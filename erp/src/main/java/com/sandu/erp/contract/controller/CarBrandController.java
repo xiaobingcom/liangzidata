@@ -241,11 +241,13 @@ public class CarBrandController {
 
         String suffixes = "." + fileNameOld.substring(fileNameOld.lastIndexOf(".") + 1);
 
+
         int insert = this.bannerMapper.insert(banner);
 
+        String fileName =  banner.getId()+"banner" + suffixes;
 
-            String fileName =  banner.getId()+"banner" + suffixes;
-            try {
+
+        try {
                 FileUtil.uploadFile(file.getBytes(), path, fileName);
                 banner.setUrl("/image/" + fileName);
             } catch (Exception e) {
@@ -253,6 +255,7 @@ public class CarBrandController {
             }
 
             if (bannerId==null){
+                this.bannerMapper.updateById(banner);
                 return ReturnValueLoader.validatorCount(insert);
 
             }else{

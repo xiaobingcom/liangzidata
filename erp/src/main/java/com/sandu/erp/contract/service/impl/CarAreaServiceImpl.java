@@ -221,14 +221,14 @@ public class CarAreaServiceImpl implements CarAreaService {
     public ReturnValueLoader appList(Integer carSeriesId) {
 
         //根据条件查询合同集合，使用插件进行分页
-        List<CarArea> carAreaTCList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","后挡").orderByDesc("update_date"));
+        List<CarArea> carAreaTCList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","天窗").orderByDesc("update_date"));
 
 
         //根据条件查询合同集合，使用插件进行分页
-        List<CarArea> carAreaQDList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","后挡").orderByDesc("update_date"));
+        List<CarArea> carAreaQDList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","前挡").orderByDesc("update_date"));
 
         //根据条件查询合同集合，使用插件进行分页
-        List<CarArea> carAreaCDList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","后挡").orderByDesc("update_date"));
+        List<CarArea> carAreaCDList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","侧挡").orderByDesc("update_date"));
 
         //根据条件查询合同集合，使用插件进行分页
         List<CarArea> carAreaHDList = this.carAreaMapper.selectList(new QueryWrapper<CarArea>().eq("car_series_id", carSeriesId).eq("name","后挡").orderByDesc("update_date"));
